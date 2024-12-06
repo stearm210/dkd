@@ -109,3 +109,4 @@ public class PartnerServiceImpl implements IPartnerService
         return partnerMapper.selectPartnerVoList(partner);
     }
 }
+
