@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="vmCount"    column="vm_count"    />
 <!--   这里通过查询得到region的id，之后再通过这个id(外键)查询对应的区域信息，将这个区域信息映射到自己     -->
 <!--   定义的nodevo中的region信息，完成映射     -->
+<!--   select中写的代码是用于查询信息的代码，这里通过对应的函数路径进行映射查询     -->
         <association property="region" javaType="Region" column="region_id" select="com.dkd.manage.mapper.RegionMapper.selectRegionById"/>
         <association property="partner" javaType="Partner" column="partner_id" select="com.dkd.manage.mapper.PartnerMapper.selectPartnerById"/>
     </resultMap>
