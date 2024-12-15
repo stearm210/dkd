@@ -39,6 +39,7 @@ public class NodeController extends BaseController
     /**
      * 查询点位管理列表
      */
+    // preAuthorize为权限管理操作，主要用于前段操作
     @PreAuthorize("@ss.hasPermi('manage:node:list')")
     @GetMapping("/list")
     public TableDataInfo list(Node node)
