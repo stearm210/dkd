@@ -65,5 +65,6 @@ public interface EmpMapper
     * 根据区域id更改区域名称
     * */
     @Update("update tb_emp set region_name=#{regionName} where region_id=#{regionId}")
+    //这里的sql语句涉及到两个#占位符，需要进行@param的别名映射，因此需要再参数前面加上@param进行别名映射
     public int updateByRegionId(@Param("regionName") String regionName, @Param("regionId") Long regionId);
 }
