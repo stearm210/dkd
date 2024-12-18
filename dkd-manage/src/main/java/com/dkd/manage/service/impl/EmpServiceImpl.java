@@ -65,6 +65,7 @@ public class EmpServiceImpl implements IEmpService
         // 补充区域名称
         emp.setRegionName(regionMapper.selectRegionById(emp.getRegionId()).getRegionName());
         // 补充角色名称
+        // 注意，由于角色有多个属性需要进行设置，因此需要抽象出ROLE对象，通过这个对象得到名字和区域等属性并插入数据库中
         Role role = roleMapper.selectRoleByRoleId(emp.getRoleId());
         emp.setRoleName(role.getRoleName());
         emp.setRoleCode(role.getRoleCode());
