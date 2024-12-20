@@ -3,10 +3,13 @@ package com.dkd.manage.service.impl;
 import java.util.List;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.dkd.common.constant.DkdContants;
 import com.dkd.common.utils.DateUtils;
 import com.dkd.common.utils.uuid.UUIDUtils;
+import com.dkd.manage.domain.Channel;
 import com.dkd.manage.domain.Node;
 import com.dkd.manage.domain.VmType;
+import com.dkd.manage.service.IChannelService;
 import com.dkd.manage.service.INodeService;
 import com.dkd.manage.service.IVmTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,9 @@ public class VendingMachineServiceImpl implements IVendingMachineService
 
     @Autowired
     private INodeService nodeService;
+
+    @Autowired
+    private IChannelService channelService;
 
     /**
      * 查询设备管理
@@ -78,13 +84,37 @@ public class VendingMachineServiceImpl implements IVendingMachineService
         //1-3 查询点位表，补充区域、点位、合作商等信息
         Node node = nodeService.selectNodeById(vendingMachine.getNodeId());
         //属性快速拷贝
-        BeanUtil.copyProperties(node,vendingMachine,"id");
-
-
-        vendingMachine.setCreateTime(DateUtils.getNowDate());
+        BeanUtil.copyProperties(node,vendingMachine,"id");//包括商圈类型、区域id、合作商id
+        vendingMachine.setAddr(node.getAddress());//设备地址
+       // 1-4 设备状态
+        //调用常量更快. 0L表示没有投放
+        vendingMachine.setVmStatus(DkdContants.VM_STATUS_NODEPLOY);
+        vendingMachine.setCreateTime(DateUtils.getNowDate());//创建时间
+        vendingMachine.setUpdateTime(DateUtils.getNowDate());//更新时间
+        // 1-5 保存
         int result = vendingMachineMapper.insertVendingMachine(vendingMachine);
         //2.新增货道
-
+        //双层for循环设置行与列
+        for (int i = 1; i <= vmType.getVmRow(); i++){//外层行遍历
+            for (int j = 1; j <= vmType.getVmCol(); j++){//外层列变换
+                //遍历获得对应结果
+                //封装channel对象
+                Channel channel = new Channel();
+               channel.setChannelCode(i+"-"+j);//货道编号
+               //售货机id
+               channel.setVmId(vendingMachine.getId());
+               //获取售货机编号
+                channel.setInnerCode(innerCode);
+                //货道最大容量
+                channel.setMaxCapacity(vmType.getChannelMaxCapacity());
+                //创建时间
+                channel.setCreateTime(DateUtils.getNowDate());
+                //修改时间
+                channel.setUpdateTime(DateUtils.getNowDate());
+                //保存货道
+               channelService.insertChannel(channel);
+            }
+        }
 
         return result;
     }
