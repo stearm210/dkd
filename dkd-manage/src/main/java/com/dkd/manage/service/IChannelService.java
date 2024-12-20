@@ -58,4 +58,14 @@ public interface IChannelService
      * @return 结果
      */
     public int deleteChannelById(Long id);
+
+    /*
+     * @Title: 批量新增售货机货道
+     * @Author: pyzxW
+     * @Date: 2024-12-20 16:43:22
+     * @Params:  chanelList
+     * @Return: 结果
+     * @Description:
+     */
+    public int batchInsertChannels(List<Channel> channelList);
 }

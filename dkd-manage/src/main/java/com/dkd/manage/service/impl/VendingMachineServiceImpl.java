@@ -1,5 +1,6 @@
 package com.dkd.manage.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.dkd.manage.mapper.VendingMachineMapper;
 import com.dkd.manage.domain.VendingMachine;
 import com.dkd.manage.service.IVendingMachineService;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -70,6 +72,8 @@ public class VendingMachineServiceImpl implements IVendingMachineService
      * @param vendingMachine 设备管理
      * @return 结果
      */
+    //添加事务保证同时完成
+    @Transactional
     @Override
     public int insertVendingMachine(VendingMachine vendingMachine)
     {
@@ -94,11 +98,13 @@ public class VendingMachineServiceImpl implements IVendingMachineService
         // 1-5 保存
         int result = vendingMachineMapper.insertVendingMachine(vendingMachine);
         //2.新增货道
-        //双层for循环设置行与列
+        //2-1 声明货道集合
+       List<Channel> channelList = new ArrayList<>();
+        //2-2 双层for循环设置行与列
         for (int i = 1; i <= vmType.getVmRow(); i++){//外层行遍历
             for (int j = 1; j <= vmType.getVmCol(); j++){//外层列变换
                 //遍历获得对应结果
-                //封装channel对象
+                //2-3 封装channel对象
                 Channel channel = new Channel();
                channel.setChannelCode(i+"-"+j);//货道编号
                //售货机id
@@ -111,11 +117,14 @@ public class VendingMachineServiceImpl implements IVendingMachineService
                 channel.setCreateTime(DateUtils.getNowDate());
                 //修改时间
                 channel.setUpdateTime(DateUtils.getNowDate());
-                //保存货道
-               channelService.insertChannel(channel);
+                //保存单个货道
+               //channelService.insertChannel(channel);
+                //添加货道对象
+                channelList.add(channel);
             }
         }
-
+        //2-4 批量保存
+       channelService.batchInsertChannels(channelList);//批量保存
         return result;
     }
 
