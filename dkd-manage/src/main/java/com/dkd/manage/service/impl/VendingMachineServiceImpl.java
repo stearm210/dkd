@@ -143,7 +143,8 @@ public class VendingMachineServiceImpl implements IVendingMachineService
         BeanUtil.copyProperties(node,vendingMachine,"id");//批量拷贝商圈类型、区域id、合作商id
         //用于拷贝设备地址
         vendingMachine.setAddr(node.getAddress());
-        vendingMachine.setUpdateTime(DateUtils.getNowDate());
+        //更新时间
+        vendingMachine.setUpdateTime(DateUtils.getNowDate());// 更新时间
         return vendingMachineMapper.updateVendingMachine(vendingMachine);
     }
 
