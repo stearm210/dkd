@@ -136,6 +136,7 @@ public class VendingMachineServiceImpl implements IVendingMachineService
      */
     @Override
     public int updateVendingMachine(VendingMachine vendingMachine) {
+        //当点位id非空时建议查询点位表
         if (vendingMachine.getNodeId()!=null){
             //查询点位表，补充 区域、点位、合作商等信息
             Node node = nodeService.selectNodeById(vendingMachine.getNodeId());
