@@ -140,6 +140,14 @@ public class GlobalExceptionHandler
     /*
     * 数据完整性异常
     * */
+     /*
+      * @Title: handleDataIntegrityViolationException
+      * @Author: pyzxW
+      * @Date: 2024-12-23 10:52:19
+      * @Params: [e]
+      * @Return: AjaxResult
+      * @Description: 数据库字段唯一性遭到破坏时抛出异常
+      */
     @ExceptionHandler(DataIntegrityViolationException.class)
     public AjaxResult handleDataIntegrityViolationException(DataIntegrityViolationException e)
     {
