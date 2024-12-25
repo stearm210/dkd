@@ -79,6 +79,7 @@ public class SkuServiceImpl implements ISkuService
     @Override
     public int deleteSkuBySkuIds(Long[] skuIds)
     {
+
         return skuMapper.deleteSkuBySkuIds(skuIds);
     }
 
