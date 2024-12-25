@@ -107,4 +107,18 @@ public class ChannelServiceImpl implements IChannelService
     public int batchInsertChannels(List<Channel> channelList) {
         return channelMapper.batchInsertChannels(channelList);
     }
+
+
+    /*
+     * @Title: countChannelBySkuIds
+     * @Author: pyzxW
+     * @Date: 2024-12-25 16:48:12
+     * @Params:  skuIds
+     * @Return: null
+     * @Description: 根据商品id集合统计货道数量
+     */
+    @Override
+    public int countChannelBySkuIds(Long[] skuIds) {
+        return channelMapper.countChannelBySkuIds(skuIds);
+    }
 }
