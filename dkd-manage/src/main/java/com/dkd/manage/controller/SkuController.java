@@ -69,9 +69,11 @@ public class SkuController extends BaseController
       * @Description: 
       */
     @PreAuthorize("@ss.hasAnyPermi('manage:sku:add')")
-    @Log(title = "商品管理", businessType = BusinessType.EXPORT)
+    @Log(title = "商品管理", businessType = BusinessType.IMPORT)
     @PostMapping("/import")
-    public AjaxResult excelImport(MultipartFile file){
+    public AjaxResult excelImport(MultipartFile file)throws Exception{
+        ExcelUtil<Sku> util = new ExcelUtil<Sku>(Sku.class);
+        List<Sku> skuList = util.importExcel(file.getInputStream());
         return null;
     }
 
