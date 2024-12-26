@@ -57,7 +57,7 @@ public class SkuController extends BaseController
     {
         List<Sku> list = skuService.selectSkuList(sku);
         ExcelUtil<Sku> util = new ExcelUtil<Sku>(Sku.class);
-        util.exportExcel(response, list, "商品管理数据");
+        util.exportEasyExcel(response, list, "商品管理数据");
     }
     
      /*
@@ -76,7 +76,7 @@ public class SkuController extends BaseController
 //        使用excelutil解析对应excel文件数据
         ExcelUtil<Sku> util = new ExcelUtil<Sku>(Sku.class);
         //解析得到的数据进行批量保存至list集合中
-        List<Sku> skuList = util.importExcel(file.getInputStream());
+        List<Sku> skuList = util.importEasyExcel(file.getInputStream());
         //使用ajax返回标准操作
         return toAjax(skuService.insertSkus(skuList));
     }

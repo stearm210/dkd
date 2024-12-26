@@ -1,6 +1,7 @@
 package com.dkd.manage.domain;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.HeadFontStyle;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
@@ -29,26 +30,32 @@ public class Sku extends BaseEntity
 
     /** 商品名称 */
     @Excel(name = "商品名称")
+    @ExcelProperty("商品名称")
     private String skuName;
 
     /** 商品图片 */
     @Excel(name = "商品图片")
+    @ExcelProperty("商品图片")
     private String skuImage;
 
     /** 品牌 */
     @Excel(name = "品牌")
+    @ExcelProperty("品牌")
     private String brandName;
 
     /** 规格(净含量) */
     @Excel(name = "规格(净含量)")
+    @ExcelProperty("规格(净含量)")
     private String unit;
 
     /** 商品价格，单位分 */
     @Excel(name = "商品价格，单位分")
+    @ExcelProperty("商品价格，单位分")
     private Long price;
 
     /** 商品类型Id */
     @Excel(name = "商品类型Id")
+    @ExcelProperty("商品类型Id")
     private Long classId;
 
     /** 是否打折促销 */
