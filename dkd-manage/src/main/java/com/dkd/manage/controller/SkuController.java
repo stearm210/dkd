@@ -20,6 +20,7 @@ import com.dkd.manage.domain.Sku;
 import com.dkd.manage.service.ISkuService;
 import com.dkd.common.utils.poi.ExcelUtil;
 import com.dkd.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 商品管理Controller
@@ -58,6 +59,22 @@ public class SkuController extends BaseController
         ExcelUtil<Sku> util = new ExcelUtil<Sku>(Sku.class);
         util.exportExcel(response, list, "商品管理数据");
     }
+    
+     /*
+      * @Title: 导入商品管理列表
+      * @Author: pyzxW
+      * @Date: 2024-12-26 15:35:12
+      * @Params:  
+      * @Return: null
+      * @Description: 
+      */
+    @PreAuthorize("@ss.hasAnyPermi('manage:sku:add')")
+    @Log(title = "商品管理", businessType = BusinessType.EXPORT)
+    @PostMapping("/import")
+    public AjaxResult excelImport(MultipartFile file){
+        return null;
+    }
+
 
     /**
      * 获取商品管理详细信息
