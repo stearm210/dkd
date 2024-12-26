@@ -1,5 +1,9 @@
 package com.dkd.manage.domain;
 
+import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.HeadFontStyle;
+import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.dkd.common.annotation.Excel;
@@ -11,6 +15,11 @@ import com.dkd.common.core.domain.BaseEntity;
  * @author itheima
  * @date 2024-12-23
  */
+//下面注解用于设置excel的相关参数
+@ExcelIgnoreUnannotated// 注解表示在导出Excel时，忽略没有被任何注解标记的字段
+@ColumnWidth(16)// 注解用于设置列的宽度
+@HeadRowHeight(14)// 注解用于设置表头行的高度
+@HeadFontStyle(fontHeightInPoints = 11)// 注解用于设置表头的字体样式
 public class Sku extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
