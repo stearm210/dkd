@@ -104,4 +104,14 @@ public class SkuServiceImpl implements ISkuService
     {
         return skuMapper.deleteSkuBySkuId(skuId);
     }
+
+    /**
+     * 批量新增商品管理
+     * @param skuList
+     * @return 结果
+     */
+    @Override
+    public int insertSkus(List<Sku> skuList) {
+        return skuMapper.insertSkus(skuList);
+    }
 }

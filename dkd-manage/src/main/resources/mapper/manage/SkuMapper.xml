@@ -34,32 +34,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where sku_id = #{skuId}
     </select>
         
-    <insert id="insertSku" parameterType="Sku" useGeneratedKeys="true" keyProperty="skuId">
-        insert into tb_sku
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="skuName != null and skuName != ''">sku_name,</if>
-            <if test="skuImage != null and skuImage != ''">sku_image,</if>
-            <if test="brandName != null and brandName != ''">brand_Name,</if>
-            <if test="unit != null and unit != ''">unit,</if>
-            <if test="price != null">price,</if>
-            <if test="classId != null">class_id,</if>
-            <if test="isDiscount != null">is_discount,</if>
-            <if test="createTime != null">create_time,</if>
-            <if test="updateTime != null">update_time,</if>
-         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="skuName != null and skuName != ''">#{skuName},</if>
-            <if test="skuImage != null and skuImage != ''">#{skuImage},</if>
-            <if test="brandName != null and brandName != ''">#{brandName},</if>
-            <if test="unit != null and unit != ''">#{unit},</if>
-            <if test="price != null">#{price},</if>
-            <if test="classId != null">#{classId},</if>
-            <if test="isDiscount != null">#{isDiscount},</if>
-            <if test="createTime != null">#{createTime},</if>
-            <if test="updateTime != null">#{updateTime},</if>
-         </trim>
-    </insert>
+<!--    <insert id="insertSku" parameterType="Sku" useGeneratedKeys="true" keyProperty="skuId">-->
+<!--        insert into tb_sku-->
+<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--            <if test="skuName != null and skuName != ''">sku_name,</if>-->
+<!--            <if test="skuImage != null and skuImage != ''">sku_image,</if>-->
+<!--            <if test="brandName != null and brandName != ''">brand_Name,</if>-->
+<!--            <if test="unit != null and unit != ''">unit,</if>-->
+<!--            <if test="price != null">price,</if>-->
+<!--            <if test="classId != null">class_id,</if>-->
+<!--            <if test="isDiscount != null">is_discount,</if>-->
+<!--            <if test="createTime != null">create_time,</if>-->
+<!--            <if test="updateTime != null">update_time,</if>-->
+<!--         </trim>-->
+<!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--            <if test="skuName != null and skuName != ''">#{skuName},</if>-->
+<!--            <if test="skuImage != null and skuImage != ''">#{skuImage},</if>-->
+<!--            <if test="brandName != null and brandName != ''">#{brandName},</if>-->
+<!--            <if test="unit != null and unit != ''">#{unit},</if>-->
+<!--            <if test="price != null">#{price},</if>-->
+<!--            <if test="classId != null">#{classId},</if>-->
+<!--            <if test="isDiscount != null">#{isDiscount},</if>-->
+<!--            <if test="createTime != null">#{createTime},</if>-->
+<!--            <if test="updateTime != null">#{updateTime},</if>-->
+<!--         </trim>-->
+<!--    </insert>-->
 
+    <insert id="insertSkus" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="skuId">
+        insert into tb_sku (sku_name, sku_image, brand_Name, unit, price, class_id)
+        values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.skuName}, #{item.skuImage}, #{item.brandName}, #{item.unit}, #{item.price}, #{item.classId})
+        </foreach>
+
+    </insert>
     <update id="updateSku" parameterType="Sku">
         update tb_sku
         <trim prefix="SET" suffixOverrides=",">

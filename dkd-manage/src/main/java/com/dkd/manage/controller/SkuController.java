@@ -72,9 +72,13 @@ public class SkuController extends BaseController
     @Log(title = "商品管理", businessType = BusinessType.IMPORT)
     @PostMapping("/import")
     public AjaxResult excelImport(MultipartFile file)throws Exception{
+        // 导入对应的信息，并且返回导入结果
+//        使用excelutil解析对应excel文件数据
         ExcelUtil<Sku> util = new ExcelUtil<Sku>(Sku.class);
+        //解析得到的数据进行批量保存至list集合中
         List<Sku> skuList = util.importExcel(file.getInputStream());
-        return null;
+        //使用ajax返回标准操作
+        return toAjax(skuService.insertSkus(skuList));
     }
 
 
