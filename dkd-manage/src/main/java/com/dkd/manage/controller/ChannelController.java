@@ -3,6 +3,7 @@ package com.dkd.manage.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.dkd.manage.domain.dto.ChannelConfigDto;
 import com.dkd.manage.domain.vo.ChannelVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,4 +116,19 @@ public class ChannelController extends BaseController
         //返回对应的信息
         return success(voList);
     }
+
+     /*
+      * @Title: 货道关联商品
+      * @Author: pyzxW
+      * @Date: 2024-12-27 15:11:36
+      * @Params:
+      * @Return: null
+      * @Description:
+      */
+     @PreAuthorize("@ss.hasPermi('manage:channel:edit')")
+     @Log(title = "售货机货道", businessType = BusinessType.UPDATE)
+     @PutMapping("/config")
+     public AjaxResult setChannel(@RequestBody ChannelConfigDto channelConfigDto) {
+         return toAjax(channelService.setChannel(channelConfigDto));
+     }
 }
