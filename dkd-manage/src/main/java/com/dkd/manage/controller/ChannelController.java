@@ -108,9 +108,11 @@ public class ChannelController extends BaseController
      * 根据售货机编号查询货道列表
      */
     @PreAuthorize("@ss.hasPermi('manage:channel:list')")
-    @GetMapping("/list/{innerCode}")
+    @GetMapping("/list/{innerCode}")//接受对应的参数(设备编号)
     public AjaxResult listByInnerCode(@PathVariable("innerCode") String innerCode) {
+        //调用service层代码
         List<ChannelVo> voList = channelService.selectChannelVoListByInnerCode(innerCode);
+        //返回对应的信息
         return success(voList);
     }
 }
