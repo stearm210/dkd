@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dkd.manage.mapper.TaskMapper">
-    
+
     <resultMap type="Task" id="TaskResult">
         <result property="taskId"    column="task_id"    />
         <result property="taskCode"    column="task_code"    />
@@ -22,12 +22,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTaskVo">
-        select task_id, task_code, task_status, create_type, inner_code, user_id, user_name, region_id, desc, product_type_id, assignor_id, addr, create_time, update_time from tb_task
+        select task_id, task_code, task_status, create_type, inner_code, user_id, user_name, region_id, `desc`, product_type_id, assignor_id, addr, create_time, update_time from tb_task
     </sql>
 
     <select id="selectTaskList" parameterType="Task" resultMap="TaskResult">
         <include refid="selectTaskVo"/>
-        <where>  
+        <where>
             <if test="taskCode != null  and taskCode != ''"> and task_code = #{taskCode}</if>
             <if test="taskStatus != null "> and task_status = #{taskStatus}</if>
             <if test="createType != null "> and create_type = #{createType}</if>
@@ -35,18 +35,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null "> and user_id = #{userId}</if>
             <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
             <if test="regionId != null "> and region_id = #{regionId}</if>
-            <if test="desc != null  and desc != ''"> and desc = #{desc}</if>
+            <if test="desc != null  and desc != ''"> and `desc` = #{desc}</if>
             <if test="productTypeId != null "> and product_type_id = #{productTypeId}</if>
             <if test="assignorId != null "> and assignor_id = #{assignorId}</if>
             <if test="addr != null  and addr != ''"> and addr = #{addr}</if>
         </where>
     </select>
-    
+
     <select id="selectTaskByTaskId" parameterType="Long" resultMap="TaskResult">
         <include refid="selectTaskVo"/>
         where task_id = #{taskId}
     </select>
-        
+
     <insert id="insertTask" parameterType="Task" useGeneratedKeys="true" keyProperty="taskId">
         insert into tb_task
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -57,7 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null">user_id,</if>
             <if test="userName != null">user_name,</if>
             <if test="regionId != null">region_id,</if>
-            <if test="desc != null">desc,</if>
+            <if test="desc != null">`desc`,</if>
             <if test="productTypeId != null">product_type_id,</if>
             <if test="assignorId != null">assignor_id,</if>
             <if test="addr != null">addr,</if>
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="userId != null">user_id = #{userId},</if>
             <if test="userName != null">user_name = #{userName},</if>
             <if test="regionId != null">region_id = #{regionId},</if>
-            <if test="desc != null">desc = #{desc},</if>
+            <if test="desc != null">`desc` = #{desc},</if>
             <if test="productTypeId != null">product_type_id = #{productTypeId},</if>
             <if test="assignorId != null">assignor_id = #{assignorId},</if>
             <if test="addr != null">addr = #{addr},</if>
@@ -106,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteTaskByTaskIds" parameterType="String">
-        delete from tb_task where task_id in 
+        delete from tb_task where task_id in
         <foreach item="taskId" collection="array" open="(" separator="," close=")">
             #{taskId}
         </foreach>
