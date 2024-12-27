@@ -17,6 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 <!--根据售货机编号查询货道列表信息-->
+<!--ChannelVoResult为定义的一个函数，返回的类型是ChannelVo    -->
     <resultMap type="ChannelVo" id="ChannelVoResult">
         <result property="id"    column="id"    />
         <result property="channelCode"    column="channel_code"    />
@@ -61,7 +62,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </select>
 <!--  根据售货机编号查询货道列表信息  -->
-<!--  id为mapper对应的查询函数，resultmap为需要的查询信息(在xml中)  -->
+<!--  id为mapper对应的查询函数，resultmap为需要的查询信息(在xml中有对应代码)  -->
+
     <select id="selectChannelVoListByInnerCode" resultMap="ChannelVoResult">
         <include refid="selectChannelVo"/>
         where inner_code = #{innerCode}
