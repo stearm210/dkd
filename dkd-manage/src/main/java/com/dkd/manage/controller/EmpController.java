@@ -122,13 +122,16 @@ public class EmpController extends BaseController
     public AjaxResult businessLisr(@PathVariable("innerCode") String innerCode) {
         //1.根据innerCode查询售货机信息
         VendingMachine vendingMachine = vendingMachineService.selectVendingMachineByInnerCode(innerCode);
+        if (vendingMachine == null) {
+            return error();
+        }
         //2.根据区域id、角色编号、员工状态查询运营人员列表
         Emp emp = new Emp();
         //获取区域id并设置
         emp.setRegionId(vendingMachine.getRegionId());
         emp.setRegionId(vendingMachine.getRegionId());// 设备所属区域
-        emp.setStatus(DkdContants.EMP_STATUS_NORMAL);// 员工启用
         emp.setRoleCode(DkdContants.ROLE_CODE_BUSINESS);// 角色编码：运营员
+        emp.setStatus(DkdContants.EMP_STATUS_NORMAL);// 员工启用
         return success(empService.selectEmpList(emp));
     }
 }
