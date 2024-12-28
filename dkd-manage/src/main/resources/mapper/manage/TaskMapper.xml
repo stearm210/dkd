@@ -20,7 +20,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
-
+<!--association标签的作用：这通常用于在查询结果中包含关联对象的数据，
+例如，如果你有一个Product类和一个TaskType类，
+这段代码可以帮助你将Product对象中的taskType
+属性填充为相应的TaskType对象。-->
     <resultMap type="TaskVo" id="TaskVoResult">
         <result property="taskId"    column="task_id"    />
         <result property="taskCode"    column="task_code"    />
