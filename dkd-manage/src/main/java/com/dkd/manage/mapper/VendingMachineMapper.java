@@ -2,6 +2,7 @@ package com.dkd.manage.mapper;
 
 import java.util.List;
 import com.dkd.manage.domain.VendingMachine;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 设备管理Mapper接口
@@ -58,4 +59,16 @@ public interface VendingMachineMapper
      * @return 结果
      */
     public int deleteVendingMachineByIds(Long[] ids);
+
+
+     /*
+      * @Title: selectVendingMachineByInnerCode
+      * @Author: pyzxW
+      * @Date: 2024-12-28 11:00:22
+      * @Params:  
+      * @Return: VendingMachine
+      * @Description: 根据设备编号查询设备信息
+      */
+     @Select("select * from tb_vending_machine where inner_code=#{innerCode}")
+     VendingMachine selectVendingMachineByInnerCode(String innerCode);
 }
