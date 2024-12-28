@@ -118,7 +118,7 @@ public class EmpController extends BaseController
       * @Description: 根据售货机获取运营人员列表
       */
     @PreAuthorize("@ss.hasPermi('manage:emp:list')")
-    @GetMapping("/businessLisr/{innerCode}")
+    @GetMapping("/businessList/{innerCode}")
     public AjaxResult businessLisr(@PathVariable("innerCode") String innerCode) {
         //1.根据innerCode查询售货机信息
         VendingMachine vendingMachine = vendingMachineService.selectVendingMachineByInnerCode(innerCode);
