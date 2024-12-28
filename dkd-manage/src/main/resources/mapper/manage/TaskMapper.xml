@@ -86,6 +86,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.isRepair!=null and params.isRepair=='false'">
                 and product_type_id = 2
             </if>
+            order by create_time desc
         </where>
     </select>
 
