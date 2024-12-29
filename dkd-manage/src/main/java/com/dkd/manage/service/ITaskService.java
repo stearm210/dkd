@@ -80,4 +80,14 @@ public interface ITaskService
       * @Description: 新增运营和运维工单
       */
     int insertTaskDto(TaskDto taskDto);
+
+     /*
+      * @Title: cancelTask
+      * @Author: pyzxW
+      * @Date: 2025-12-29 15:40:15
+      * @Params:
+      * @Return: null
+      * @Description: 取消工单
+      */
+    int cancelTask(Task task);
 }

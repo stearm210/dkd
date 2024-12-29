@@ -106,4 +106,20 @@ public class TaskController extends BaseController
     {
         return toAjax(taskService.deleteTaskByTaskIds(taskIds));
     }
+
+     /*
+      * @Title: 取消
+      * @Author: pyzxW
+      * @Date: 2025-12-29 15:38:14
+      * @Params:
+      * @Return: null
+      * @Description:取消工单
+      */
+     @PreAuthorize("@ss.hasPermi('manage:task:edit')")
+     @Log(title = "工单", businessType = BusinessType.UPDATE)
+     @PutMapping("/cancel")
+     public AjaxResult cancelTask(@RequestBody Task task) {
+         return toAjax(taskService.cancelTask(task));
+     }
+
 }
