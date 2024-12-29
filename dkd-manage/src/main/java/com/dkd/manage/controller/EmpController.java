@@ -134,4 +134,28 @@ public class EmpController extends BaseController
         emp.setStatus(DkdContants.EMP_STATUS_NORMAL);// 员工启用
         return success(empService.selectEmpList(emp));
     }
+
+    /*
+     * @Title:
+     * @Author: pyzxW
+     * @Date: 2024-12-28 11:05:31
+     * @Params:
+     * @Return: null
+     * @Description: 根据售货机获取运维人员列表
+     */
+    @PreAuthorize("@ss.hasPermi('manage:emp:list')")
+    @GetMapping("/operationList/{innerCode}")
+    public AjaxResult getOperationList(@PathVariable("innerCode") String innerCode) {
+        // 1.查询售货机信息
+        VendingMachine vm = vendingMachineService.selectVendingMachineByInnerCode(innerCode);
+        if (vm == null) {
+            return error("售货机不存在");
+        }
+        // 2.根据区域id、角色编号、状态查询运维人员列表
+        Emp empParam = new Emp();
+        empParam.setRegionId(vm.getRegionId());// 设备所属区域
+        empParam.setStatus(DkdContants.EMP_STATUS_NORMAL);// 员工启用
+        empParam.setRoleCode(DkdContants.ROLE_CODE_OPERATOR);// 角色编码：维修员
+        return success(empService.selectEmpList(empParam));
+    }
 }
