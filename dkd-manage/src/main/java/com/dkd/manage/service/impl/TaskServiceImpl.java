@@ -2,6 +2,7 @@ package com.dkd.manage.service.impl;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -10,7 +11,9 @@ import com.dkd.common.constant.DkdContants;
 import com.dkd.common.exception.ServiceException;
 import com.dkd.common.utils.DateUtils;
 import com.dkd.manage.domain.Emp;
+import com.dkd.manage.domain.TaskDetails;
 import com.dkd.manage.domain.VendingMachine;
+import com.dkd.manage.domain.dto.TaskDetailsDto;
 import com.dkd.manage.domain.dto.TaskDto;
 import com.dkd.manage.domain.vo.TaskVo;
 import com.dkd.manage.service.IEmpService;
@@ -174,8 +177,23 @@ public class TaskServiceImpl implements ITaskService
         task.setTaskCode(generateTaskCode());// 工单编号
         int taskResult = taskMapper.insertTask(task);
 
-
-        return 0;
+        //7.判断是否为补货工单
+        if (taskDto.getProductTypeId().equals(DkdContants.TASK_TYPE_SUPPLY)) {
+            // 8.保存工单详情
+            List<TaskDetailsDto> details = taskDto.getDetails();
+            if (CollUtil.isEmpty(details)) {
+                throw new ServiceException("补货工单详情不能为空");
+            }
+            // 将dto转为po补充属性
+            List<TaskDetails> taskDetailsList = details.stream().map(dto -> {
+                TaskDetails taskDetails = BeanUtil.copyProperties(dto, TaskDetails.class);
+                taskDetails.setTaskId(task.getTaskId());
+                return taskDetails;
+            }).collect(Collectors.toList());
+            // 批量新增
+            taskDetailsService.batchInsertTaskDetails(taskDetailsList);
+        }
+        return taskResult;
     }
 
     //生成并获取当天的工单编号(唯一标识)
