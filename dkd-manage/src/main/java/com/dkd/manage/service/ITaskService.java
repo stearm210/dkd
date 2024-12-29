@@ -2,6 +2,7 @@ package com.dkd.manage.service;
 
 import java.util.List;
 import com.dkd.manage.domain.Task;
+import com.dkd.manage.domain.dto.TaskDto;
 import com.dkd.manage.domain.vo.TaskVo;
 
 /**
@@ -69,4 +70,14 @@ public interface ITaskService
      * @Description: 查询工单列表
      */
     List<TaskVo> selectTaskVoList(Task task);
+
+     /*
+      * @Title:
+      * @Author: pyzxW
+      * @Date: 2025-12-29 10:21:21
+      * @Params:
+      * @Return: null
+      * @Description: 新增运营和运维工单
+      */
+    int insertTaskDto(TaskDto taskDto);
 }
