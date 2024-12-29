@@ -2,6 +2,13 @@ package com.dkd.manage.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.dkd.common.core.domain.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +30,12 @@ import com.dkd.common.core.page.TableDataInfo;
 
 /**
  * 工单详情Controller
- * 
- * @author itheima
- * @date 2024-12-27
  */
 @RestController
 @RequestMapping("/manage/taskDetails")
-public class TaskDetailsController extends BaseController
-{
+@Api(tags = "工单详情管理")
+public class TaskDetailsController extends BaseController {
+
     @Autowired
     private ITaskDetailsService taskDetailsService;
 
@@ -39,8 +44,8 @@ public class TaskDetailsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('manage:taskDetails:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TaskDetails taskDetails)
-    {
+    @ApiOperation(value = "获取工单详情列表", notes = "根据查询条件返回工单详情列表")
+    public TableDataInfo list(@ApiParam(name = "taskDetails", value = "查询参数", required = false) TaskDetails taskDetails) {
         startPage();
         List<TaskDetails> list = taskDetailsService.selectTaskDetailsList(taskDetails);
         return getDataTable(list);
@@ -52,10 +57,10 @@ public class TaskDetailsController extends BaseController
     @PreAuthorize("@ss.hasPermi('manage:taskDetails:export')")
     @Log(title = "工单详情", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, TaskDetails taskDetails)
-    {
+    @ApiOperation(value = "导出工单详情列表为Excel文件", notes = "根据查询条件导出工单详情列表到Excel文件")
+    public void export(HttpServletResponse response, @ApiParam(name = "taskDetails", value = "查询参数", required = false) TaskDetails taskDetails) {
         List<TaskDetails> list = taskDetailsService.selectTaskDetailsList(taskDetails);
-        ExcelUtil<TaskDetails> util = new ExcelUtil<TaskDetails>(TaskDetails.class);
+        ExcelUtil<TaskDetails> util = new ExcelUtil<>(TaskDetails.class);
         util.exportExcel(response, list, "工单详情数据");
     }
 
@@ -63,9 +68,15 @@ public class TaskDetailsController extends BaseController
      * 获取工单详情详细信息
      */
     @PreAuthorize("@ss.hasPermi('manage:taskDetails:query')")
-    @GetMapping(value = "/{detailsId}")
-    public AjaxResult getInfo(@PathVariable("detailsId") Long detailsId)
-    {
+    @GetMapping("/{detailsId}")
+    @ApiOperation(value = "获取工单详情", notes = "根据ID获取工单详情")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "成功"),
+            @ApiResponse(code = 401, message = "未授权"),
+            @ApiResponse(code = 403, message = "禁止访问"),
+            @ApiResponse(code = 404, message = "未找到资源")
+    })
+    public AjaxResult getInfo(@ApiParam(name = "detailsId", value = "工单详情ID", required = true) @PathVariable("detailsId") Long detailsId) {
         return success(taskDetailsService.selectTaskDetailsByDetailsId(detailsId));
     }
 
@@ -75,8 +86,8 @@ public class TaskDetailsController extends BaseController
     @PreAuthorize("@ss.hasPermi('manage:taskDetails:add')")
     @Log(title = "工单详情", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody TaskDetails taskDetails)
-    {
+    @ApiOperation(value = "新增工单详情", notes = "创建一个新的工单详情记录")
+    public AjaxResult add(@ApiParam(name = "taskDetails", value = "工单详情对象", required = true) @RequestBody TaskDetails taskDetails) {
         return toAjax(taskDetailsService.insertTaskDetails(taskDetails));
     }
 
@@ -86,8 +97,8 @@ public class TaskDetailsController extends BaseController
     @PreAuthorize("@ss.hasPermi('manage:taskDetails:edit')")
     @Log(title = "工单详情", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody TaskDetails taskDetails)
-    {
+    @ApiOperation(value = "修改工单详情", notes = "更新已有的工单详情记录")
+    public AjaxResult edit(@ApiParam(name = "taskDetails", value = "工单详情对象", required = true) @RequestBody TaskDetails taskDetails) {
         return toAjax(taskDetailsService.updateTaskDetails(taskDetails));
     }
 
@@ -96,25 +107,21 @@ public class TaskDetailsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('manage:taskDetails:remove')")
     @Log(title = "工单详情", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{detailsIds}")
-    public AjaxResult remove(@PathVariable Long[] detailsIds)
-    {
+    @DeleteMapping("/{detailsIds}")
+    @ApiOperation(value = "删除工单详情", notes = "根据ID数组删除一个或多个工单详情")
+    public AjaxResult remove(@ApiParam(name = "detailsIds", value = "工单详情ID数组", required = true) @PathVariable Long[] detailsIds) {
         return toAjax(taskDetailsService.deleteTaskDetailsByDetailsIds(detailsIds));
     }
-    
-     /*
-      * @Title:
-      * @Author: pyzxW
-      * @Date: 2025-12-29 15:53:57
-      * @Params:  
-      * @Return: null
-      * @Description: 查看补货详情
-      */
-     @PreAuthorize("@ss.hasPermi('manage:taskDetails:list')")
-     @GetMapping(value = "/byTaskId/{taskId}")
-    public AjaxResult byTaskId(@PathVariable("taskId") Long taskId){
-         TaskDetails taskDetails = new TaskDetails();
-         taskDetails.setTaskId(taskId);
-         return success(taskDetailsService.selectTaskDetailsList(taskDetails));
-     }
+
+    /**
+     * 查看补货详情
+     */
+    @PreAuthorize("@ss.hasPermi('manage:taskDetails:list')")
+    @GetMapping("/byTaskId/{taskId}")
+    @ApiOperation(value = "根据工单ID查看补货详情", notes = "根据工单ID获取关联的工单详情列表")
+    public R<List<TaskDetails>> byTaskId(@ApiParam(name = "taskId", value = "工单ID", required = true) @PathVariable("taskId") Long taskId) {
+        TaskDetails taskDetails = new TaskDetails();
+        taskDetails.setTaskId(taskId);
+        return R.ok(taskDetailsService.selectTaskDetailsList(taskDetails));
+    }
 }
